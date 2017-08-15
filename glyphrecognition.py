@@ -29,10 +29,10 @@ while True:
             topdown_quad = get_topdown_quad(gray, approx.reshape(4, 2))
 
             resized_shape = resize_image(topdown_quad, SHAPE_RESIZE)
-            # if resized_shape[5, 5] > BLACK_THRESHOLD: continue
+            if resized_shape[5, 5] > BLACK_THRESHOLD: continue
 
-            if resized_shape[(resized_shape.shape[0] / 100.0) * 5,
-                             (resized_shape.shape[1] / 100.0) * 5] > BLACK_THRESHOLD: continue
+            """if resized_shape[(resized_shape.shape[0] / 100.0) * 5,
+                            (resized_shape.shape[1] / 100.0) * 5] > BLACK_THRESHOLD: continue"""
 
             glyph_found = False
 
@@ -57,5 +57,5 @@ while True:
                 image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
                 break
 
-    cv2.imshow('2D Augmented Reality using Glyphs', image)
+    cv2.imshow('Glyph Recognition', image)
     cv2.waitKey(10)
