@@ -9,7 +9,12 @@ QUADRILATERAL_POINTS = 4
 SHAPE_RESIZE = 100.0
 BLACK_THRESHOLD = 100
 WHITE_THRESHOLD = 155
-GLYPH_PATTERN = [0, 1, 0, 1, 0, 0, 0, 1, 1]
+BOY_PATTERN = [1, 1, 0, 1, 0, 1, 0, 1, 0]
+GIRL_PATTERN = [1, 1, 0, 0, 1, 1, 1, 1, 0]
+KOKOA_PATTERN = [0, 1, 0, 1, 0, 0, 0, 1, 1]
+MEDAL_PATTERN = [1, 0, 0, 0, 1, 0, 1, 0, 1]
+TROPHY_PATTERN = [0, 0, 1, 1, 1, 1, 1, 0, 0]
+
 
 while True:
     image = webcam.get_current_frame()
@@ -29,10 +34,8 @@ while True:
             topdown_quad = get_topdown_quad(gray, approx.reshape(4, 2))
 
             resized_shape = resize_image(topdown_quad, SHAPE_RESIZE)
-            if resized_shape[5, 5] > BLACK_THRESHOLD: continue
 
-            """if resized_shape[(resized_shape.shape[0] / 100.0) * 5,
-                            (resized_shape.shape[1] / 100.0) * 5] > BLACK_THRESHOLD: continue"""
+            if resized_shape[3, 3] > BLACK_THRESHOLD: continue
 
             glyph_found = False
 
@@ -46,15 +49,35 @@ while True:
 
                 if not glyph_pattern: continue
 
-                if glyph_pattern == GLYPH_PATTERN:
+                if glyph_pattern == BOY_PATTERN:
+                    substitute_image = cv2.imread('Personaje1.png')
+                    image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
+                    glyph_found = True
+                    break
+                elif glyph_pattern == GIRL_PATTERN:
+                    substitute_image = cv2.imread('personaje2.png')
+                    image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
+                    glyph_found = True
+                    break
+                elif glyph_pattern == KOKOA_PATTERN:
+                    substitute_image = cv2.imread('kokoa.jpg')
+                    image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
+                    glyph_found = True
+                    break
+                elif glyph_pattern == MEDAL_PATTERN:
+                    substitute_image = cv2.imread('medalla.jpg')
+                    image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
+                    glyph_found = True
+                    break
+                elif glyph_pattern == TROPHY_PATTERN:
+                    substitute_image = cv2.imread('trofeo.png')
+                    image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
                     glyph_found = True
                     break
 
                 resized_shape = rotate_image(resized_shape, 90)
 
             if glyph_found:
-                substitute_image = cv2.imread('Personaje1.png')
-                image = add_substitute_quad(image, substitute_image, approx.reshape(4, 2))
                 break
 
     cv2.imshow('Glyph Recognition', image)
